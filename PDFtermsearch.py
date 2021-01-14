@@ -110,7 +110,11 @@ class UserInputFrame(ttk.Frame):
             pageObj = pdfReader.getPage(i)
             fullstring = pageObj.extractText()
             for x in termDict:
-                occurences = fullstring.count(x)
+                y = '[^a-z]' + x + '[^a-z]'
+                occurences = 0
+                for matches in re.finditer(y, fullstring, flags=re.IGNORECASE):
+                    occurences += 1
+                # occurences = fullstring.count(x)
                 termDict[x] = termDict[x] + occurences
         pdfFileObj.close()
         for c in combTerms:
