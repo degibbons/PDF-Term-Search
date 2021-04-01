@@ -45,7 +45,7 @@ class UserInputFrame(ttk.Frame):
         buttonAnalyze = ttk.Button(self, text="Analyze", command=self.termscan)
         statusLabel = ttk.Label(self, textvariable=self.status)
         self.canvas = tk.Canvas(self, width=47, height=47, bg="black")
-        self.canvas.grid(row=2, column=1)
+        self.canvas.grid(row=2, column=2)
         self.myrectangle = self.canvas.create_rectangle(5, 5, 45, 45, fill='red')
 
         buttonPDF.grid(column=0, row=0, sticky="NSW", padx=15, pady=15)
@@ -68,37 +68,103 @@ class UserInputFrame(ttk.Frame):
     def termscan(self):
         self.status.set("Currently Running")
         self.canvas.itemconfig(self.myrectangle, fill='yellow')
-        termDict = {}
-        combTerms = []
-        time.sleep(1)
+        fullTermList = []
+        originalTermList = []
+        fullTermCount = []
         with open(self.term_filename.get(), newline='') as csvfile:
             termList = csv.reader(csvfile, delimiter=',')
             for row in termList:
-                term = row[0]
-                termDict[term] = 0
-            test = list(termDict.keys())
-            for termA in test:
-                result = re.search('/', termA)
-                if result is None:
-                    termDict[termA] = 0
-                else:
-                    result1 = re.split(' / ', termA)
+                term = row[0].rstrip()
+                originalTermList.append(term)
+                result = re.search('/', term)
+                result2 = re.search('OR', term)
+                if (result is None) and (result2 is None):
+                    fullTermList.append([term])
+                    fullTermCount.append([0])
+                elif result is not None:
+                    result1 = re.split(' / ', term)
                     if len(result1) == 2:
-                        combTerms.append((result1[0], result1[1]))
+                        fullTermList.append([result1[0], result1[1]])
+                        tempZeros = [0] * 2
+                        fullTermCount.append(tempZeros)
                     elif len(result1) == 3:
-                        combTerms.append((result1[0], result1[1], result1[2]))
-                    for i in range(0, len(result1)):
-                        termDict[result1[i]] = 0
-            for a in combTerms:
-                if len(a) == 2:
-                    termDict[a[0]] = 0
-                    termDict[a[1]] = 0
-                elif len(a) == 3:
-                    termDict[a[0]] = 0
-                    termDict[a[1]] = 0
-                    termDict[a[2]] = 0
-            lines = len(list(termList))
-            # print(combTerms)
+                        fullTermList.append([result1[0], result1[1], result1[2]])
+                        tempZeros = [0] * 3
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 4:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3]])
+                        tempZeros = [0] * 4
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 5:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4]])
+                        tempZeros = [0] * 5
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 6:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5]])
+                        tempZeros = [0] * 6
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 7:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6]])
+                        tempZeros = [0] * 7
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 8:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6], result1[7]])
+                        tempZeros = [0] * 8
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 9:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6], result1[7], result1[8]])
+                        tempZeros = [0] * 9
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 10:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6], result1[7], result1[8], result1[9]])
+                        tempZeros = [0] * 10
+                        fullTermCount.append(tempZeros)
+                elif result2 is not None:
+                    result1 = re.split(' OR ', term)
+                    if len(result1) == 2:
+                        fullTermList.append([result1[0], result1[1]])
+                        tempZeros = [0] * 2
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 3:
+                        fullTermList.append([result1[0], result1[1], result1[2]])
+                        tempZeros = [0] * 3
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 4:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3]])
+                        tempZeros = [0] * 4
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 5:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4]])
+                        tempZeros = [0] * 5
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 6:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5]])
+                        tempZeros = [0] * 6
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 7:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6]])
+                        tempZeros = [0] * 7
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 8:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6], result1[7]])
+                        tempZeros = [0] * 8
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 9:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6], result1[7], result1[8]])
+                        tempZeros = [0] * 9
+                        fullTermCount.append(tempZeros)
+                    elif len(result1) == 10:
+                        fullTermList.append([result1[0], result1[1], result1[2], result1[3], result1[4], result1[5],
+                                             result1[6], result1[7], result1[8], result1[9]])
+                        tempZeros = [0] * 10
+                        fullTermCount.append(tempZeros)
         # creating a pdf file object
         pdfFileObj = open(self.pdf_filename.get(), 'rb')
         # creating a pdf reader object
@@ -109,27 +175,28 @@ class UserInputFrame(ttk.Frame):
         for i in range(1, pageNumber):
             pageObj = pdfReader.getPage(i)
             fullstring = pageObj.extractText()
-            for x in termDict:
-                y = '[^a-z]' + x + '[^a-z]'
-                occurences = 0
-                for matches in re.finditer(y, fullstring, flags=re.IGNORECASE):
-                    occurences += 1
-                # occurences = fullstring.count(x)
-                termDict[x] = termDict[x] + occurences
+            termIndex = 0
+            innerTermIndex = 0
+            for x in fullTermList:
+                for eachTerm in x:
+                    y = '[^a-z]' + eachTerm + '[^a-z]'
+                    occurrences = 0
+                    for matches in re.finditer(y, fullstring, flags=re.IGNORECASE):
+                        occurrences += 1
+                    fullTermCount[termIndex][innerTermIndex] += occurrences
+                    innerTermIndex += 1
+                termIndex += 1
+                innerTermIndex = 0
         pdfFileObj.close()
-        for c in combTerms:
-            if len(c) == 2:
-                termDict[f'{c[0]} / {c[1]}'] = termDict[c[0]] + termDict[c[1]]
-                termDict.pop(c[0], None)
-                termDict.pop(c[1], None)
-            elif len(c) == 3:
-                termDict[f'{c[0]} / {c[1]} / {c[2]}'] = termDict[c[0]] + termDict[c[1]] + termDict[c[2]]
-                termDict.pop(c[0], None)
-                termDict.pop(c[1], None)
-                termDict.pop(c[2], None)
+        finalTermCount = []
+        for c in fullTermCount:
+            finalTermCount.append(sum(c))
+
         with open('ResultsOut.csv', 'w') as output:
-            for key in termDict.keys():
-                output.write("%s,%d\n" % (key, termDict[key]))
+            index = 0
+            for key in originalTermList:
+                output.write("%s,%d\n" % (key, finalTermCount[index]))
+                index += 1
         self.status.set("Finished")
         self.canvas.itemconfig(self.myrectangle, fill='green')
 
