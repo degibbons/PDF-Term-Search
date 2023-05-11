@@ -46,14 +46,16 @@ For an example, see below:
 ### Term Input Format
 
 The format of the input .csv file is simply one column of terms, as below:
-<img src=CSV_Visual.png height="500">  
+
+<img src=CSV_Visual.png height="500">
+
 Terms that are considered synonyms can be grouped together using a capital "OR" with a space before and after OR. Up to 10 terms may be grouped together. The final tally for each group will not report all the joined terms separately, but rather all together.
 
 ### PDF Notes of Interest
 
 This program utilizes PyPDF2 to read and parse available text in a given .pdf file. If the text is within a side bar or unusual place, such as a diagram, it is possible that the library-provided PdfFileReader object may not pick up the aforementioned text.
 .pdf files selected should have the intended parsable text within the regular defined bounds. Essentially, although a .pdf file may contain sidebars, image captions, image text, illustrative chapter titles, and other text that does not fall within the main body, these should not be the intended target for parsing using this tool, as there is no guarantee the text itself will be identified for parsing.
-The PyPDF2 library that allows for parsing only extracts clearly identifiable text, essentially, what can be highlighted on the document when viewing. 
+The PyPDF2 library that allows for parsing only extracts clearly identifiable text, essentially, what can be highlighted on the document when viewing.
 Users should be wary of this behavior before running the program.
 
 ## Acknowledgments
